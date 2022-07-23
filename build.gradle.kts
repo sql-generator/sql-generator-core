@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.7.10"
 }
 
-group = "io.github.sql-generator"
+group = "io.github.sqlgenerator"
 version = "1.0-SNAPSHOT"
 
 repositories {
