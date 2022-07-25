@@ -67,6 +67,9 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.version }}
 
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew
+
       - name: Validate Wrapper
         uses: gradle/wrapper-validation-action@v1.0.4
 
