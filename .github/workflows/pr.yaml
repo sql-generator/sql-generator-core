@@ -1,0 +1,83 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  gradle:
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        distribution: [ 'temurin', 'zulu', 'adopt-openj9', 'liberica', 'microsoft', 'corretto' ]
+        version: [ '11', '12', '13', '15', '16', '17' ]
+        exclude:
+          - distribution: 'temurin'
+            version: '12'
+          - distribution: 'temurin'
+            version: '13'
+          - distribution: 'temurin'
+            version: '15'
+          - distribution: 'temurin'
+            version: '12'
+          - distribution: 'zulu'
+            version: '16'
+          - distribution: 'adopt-openj9'
+            version: '17'
+          - distribution: 'liberica'
+            version: '12'
+          - distribution: 'liberica'
+            version: '13'
+          - distribution: 'liberica'
+            version: '14'
+          - distribution: 'liberica'
+            version: '15'
+          - distribution: 'liberica'
+            version: '16'
+          - distribution: 'microsoft'
+            version: '12'
+          - distribution: 'microsoft'
+            version: '13'
+          - distribution: 'microsoft'
+            version: '14'
+          - distribution: 'microsoft'
+            version: '15'
+          - distribution: 'microsoft'
+            version: '16'
+          - distribution: 'corretto'
+            version: '12'
+          - distribution: 'corretto'
+            version: '13'
+          - distribution: 'corretto'
+            version: '14'
+          - distribution: 'corretto'
+            version: '15'
+          - distribution: 'corretto'
+            version: '16'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3.0.2
+
+      - name: Setup Java
+        uses: actions/setup-java@3.4.1
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.version }}
+
+      - name: Validate Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Gradle check
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: check
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v3.1.0
+        if: failure()
+        with:
+          name: reports-${{ matrix.distribution }}-${{ matrix.version }}
+          path: build/reports/
