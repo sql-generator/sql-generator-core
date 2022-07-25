@@ -1,0 +1,46 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  gradle:
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        distribution: [ 'temurin', 'zulu', 'adopt-openj9', 'liberica', 'microsoft', 'corretto' ]
+        version: [ '11', '17' ]
+        exclude:
+          - distribution: 'adopt-openj9'
+            version: '17'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3.0.2
+
+      - name: Setup Java
+        uses: actions/setup-java@v3.4.1
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.version }}
+
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew
+
+      - name: Validate Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Gradle check
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: check
+
+      - name: Upload Reports
+        uses: actions/upload-artifact@v3.1.0
+        if: failure()
+        with:
+          name: reports-${{ matrix.distribution }}-${{ matrix.version }}
+          path: build/reports/
