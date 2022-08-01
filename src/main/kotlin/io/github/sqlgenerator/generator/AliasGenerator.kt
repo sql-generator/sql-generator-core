@@ -17,7 +17,7 @@ class AliasGenerator {
         var alias: String?
         do {
             alias = (minLength..Random.nextInt(minLength, maxLength))
-                .map { i -> Random.nextInt(0, charPool.size) }
+                .map { Random.nextInt(0, charPool.size) }
                 .map(charPool::get)
                 .joinToString("")
         } while (alias?.let {
