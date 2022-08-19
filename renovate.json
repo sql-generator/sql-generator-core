@@ -6,16 +6,6 @@
   "reviewers": [
     "julianahrens"
   ],
-  "packageRules": [
-    {
-      "matchPackagePatterns": ["minor", "patch", "pin", "digest"],
-      "automerge": true,
-      "automergeType": "branch"
-    },
-    {
-      "matchPackagePatterns": ["devDependencies"],
-      "automerge": true,
-      "automergeType": "branch"
-    }
-  ]
+  "automerge": true,
+  "automergeType": "branch"
 }
