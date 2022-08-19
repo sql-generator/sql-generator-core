@@ -1,0 +1,31 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  gradle:
+    if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3.0.2
+
+      - name: Setup Java
+        uses: actions/setup-java@v3.4.1
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Ensure gradlew is executable
+        run: chmod +x ./gradlew
+
+      - name: Validate Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Gradle build
+        uses: gradle/gradle-build-action@v2.2.3
+        with:
+          arguments: build
