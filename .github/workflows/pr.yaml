@@ -42,7 +42,7 @@ jobs:
           arguments: check
 
       - name: Upload Reports
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.2.1
         if: failure()
         with:
           name: reports-${{ matrix.distribution }}-${{ matrix.version }}
