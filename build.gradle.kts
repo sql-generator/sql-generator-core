@@ -19,11 +19,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
 
     testImplementation("org.assertj:assertj-core:3.23.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.3")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.3")
 }
 
 tasks.test {
